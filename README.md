@@ -146,8 +146,8 @@ clamscan -r /var/*
 
 | Name | Student ID | System Role | Key Responsibilities |
 | :--- | :---: | :---: | :--- |
-| **Keffka Mayloa** | `160425072`[cite: 1] | `root`[cite: 48] | OS installation, user provisioning, Apache Virtual Host setup, ClamAV activation, portfolio deployment[cite: 48] |
-| **Livio Hardi** | `160425040`[cite: 1] | `root`[cite: 48] | Apache2, MariaDB, phpMyAdmin, and ClamAV installation & configuration, portfolio deployment[cite: 48] |
-| **Margaret Christabel Robert** | `160425067`[cite: 1] | `root` / VM Owner[cite: 48] | Virtual Host configuration, `htop` performance monitoring, automated backup script & cron setup, CLI SFTP deployment[cite: 48] |
-| **Valencia Theodora** | `160425006`[cite: 1] | `user`[cite: 48] | Portfolio web deployment, technical documentation standardization and editorial review[cite: 48] |
-| **Annabelle Milka Seraphine** | `160425084`[cite: 1] | `user`[cite: 48] | Portfolio web deployment, GUI SFTP deployment (WinSCP), technical report formatting[cite: 48] |
+| **Keffka Mayloa** | `160425072` | `root` | OS installation, user provisioning, Apache Virtual Host setup, ClamAV activation, portfolio deployment |
+| **Livio Hardi** | `160425040` | `root` | Apache2, MariaDB, phpMyAdmin, and ClamAV installation & configuration, portfolio deployment |
+| **Margaret Christabel Robert** | `160425067` | `root` / VM Owner | Virtual Host configuration, `htop` performance monitoring, automated backup script & cron setup, CLI SFTP deployment |
+| **Valencia Theodora** | `160425006` | `user` | Portfolio web deployment, technical documentation standardization and editorial review |
+| **Annabelle Milka Seraphine** | `160425084` | `user` | Portfolio web deployment, GUI SFTP deployment (WinSCP), technical report formatting |
