@@ -15,6 +15,27 @@ A production-style Linux server administration and web hosting infrastructure pr
 
 ---
 
+## Repository Structure
+
+```text
+azure-ubuntu-lamp-virtualhost-deployment/
+├── README.md
+├── configs/
+│   └── reboot.conf                 # Apache Virtual Host & multi-tenant Alias routing
+├── scripts/
+│   ├── backup.sh                   # Automated daily website backup with 7-day retention
+│   └── scan.sh                     # Automated ClamAV signature update & recursive scan
+├── images/
+│   ├── sftp-deployment.png         # WinSCP dual-pane SFTP asset upload proof
+│   ├── virtual-host-demo.png       # Live portfolio served via custom reboot.id domain
+│   ├── htop-monitoring.png         # Real-time CPU, RAM, and load average telemetry
+│   └── clamav-scan-summary.png     # ClamAV malware scan verification output
+└── docs/
+    └── Project_UAS_OS_REBOOT.pdf   # Full technical report & implementation screenshots
+```
+
+---
+
 ## Key Features & Implementation
 
 ### 1. OS Provisioning & Privilege Separation
@@ -34,26 +55,39 @@ A production-style Linux server administration and web hosting infrastructure pr
   - `http://reboot.id/mahasiswa160425072` $\rightarrow$ `/var/www/160425072`
   - `http://reboot.id/mahasiswa160425084` $\rightarrow$ `/var/www/160425084`
 - Enforced directory ownership (`chown -R [USER]:www-data`) and permissions (`chmod 755`) so each user can independently deploy HTML/CSS and media assets over SFTP.
-![WinSCP dual-pane SFTP window](images/sftp-deployment.png)
-![Live Apache Virtual Host Routing on reboot.id](images/virtual-host-demo.png)
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="images/sftp-deployment.png" alt="WinSCP Dual-Pane SFTP Deployment" width="420"/><br/>
+      <sub><b>SFTP Asset Deployment:</b> Uploading web files via WinSCP</sub>
+    </td>
+    <td align="center">
+      <img src="images/virtual-host-demo.png" alt="Live Apache Virtual Host Routing on reboot.id" width="420"/><br/>
+      <sub><b>Virtual Host Routing:</b> Live portfolio served via <code>reboot.id</code></sub>
+    </td>
+  </tr>
+</table>
 
 ### 4. Server Performance Monitoring (`htop`)
 - Audited live server metrics under active web serving conditions:
   - **CPU Load:** `0.0%` – `0.7%` across 2 active vCPU cores
   - **Memory Usage:** `458 MB / 7.70 GB` (`~5.8%` utilization)
   - **Process & Load Average:** `46` tasks (`55` user threads, `110` kernel threads) with load averages of `0.24` (1m), `0.14` (5m), and `0.10` (15m)
- ![Live Server Telemetry via htop](images/htop-monitoring.png)
+
+![Live Server Telemetry via htop](images/htop-monitoring.png)
 
 ### 5. Automated Backup & Antivirus Pipelines
 - **Daily Website Backup with 7-Day Retention (`/var/backups/scripts/backup.sh`):** Automatically compresses every directory in `/var/www/` into dated `.tar.gz` archives and purges backups older than 7 days.
 - **Daily Malware Definition Update & Scan (`/var/scripts/scan.sh`):** Updates ClamAV virus signatures (`3.62M+` signatures) via `freshclam` and recursively scans `/var/*` for infected files.
+
 ![ClamAV Recursive Scan Summary](images/clamav-scan-summary.png)
 
 ---
 
 ## Configuration & Automation Scripts
 
-### Apache Virtual Host (`reboot.conf`)
+### Apache Virtual Host (`configs/reboot.conf`)
 ```apache
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
@@ -78,7 +112,7 @@ A production-style Linux server administration and web hosting infrastructure pr
 </VirtualHost>
 ```
 
-### Automated Website Backup (`backup.sh`)
+### Automated Website Backup (`scripts/backup.sh`)
 ```bash
 #!/bin/bash
 
@@ -95,7 +129,7 @@ done
 find "$BACKUP_DIR" -name "*.tar.gz" -mtime +7 -delete
 ```
 
-### Automated ClamAV Update & Scan (`scan.sh`)
+### Automated ClamAV Update & Scan (`scripts/scan.sh`)
 ```bash
 #!/bin/bash
 sudo systemctl stop clamav-freshclam
@@ -120,12 +154,13 @@ clamscan -r /var/*
 1. **Install LAMP Stack & Security Packages:**
    ```bash
    sudo apt update
-   sudo apt install apache2 php libapache2-mod-php php-mysql mariadb-server phpmyadmin clamav clamav-daemon -y
+   sudo apt install apache2 php libapache2-mod-php php-mysql php-mbstring mariadb-server phpmyadmin clamav clamav-daemon -y
    sudo mariadb-secure-installation
    sudo phpenmod mbstring && sudo systemctl restart apache2
    ```
 2. **Enable Custom Virtual Host:**
    ```bash
+   sudo cp configs/reboot.conf /etc/apache2/sites-available/reboot.conf
    sudo a2ensite reboot.conf
    sudo systemctl reload apache2
    ```
@@ -136,6 +171,9 @@ clamscan -r /var/*
    ```
 4. **Activate Scheduled Maintenance:**
    ```bash
+   sudo mkdir -p /var/backups/scripts /var/scripts
+   sudo cp scripts/backup.sh /var/backups/scripts/backup.sh
+   sudo cp scripts/scan.sh /var/scripts/scan.sh
    sudo chmod +x /var/backups/scripts/backup.sh /var/scripts/scan.sh
    sudo crontab -e
    ```
