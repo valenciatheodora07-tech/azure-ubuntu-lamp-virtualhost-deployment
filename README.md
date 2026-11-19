@@ -4,6 +4,21 @@ A production-style Linux server administration and web hosting infrastructure pr
 
 ---
 
+## Table of Contents
+
+- [System Architecture & Specifications](#system-architecture--specifications)
+- [Key Features & Implementation](#key-features--implementation)
+  - [1. OS Provisioning & Privilege Separation](#1-os-provisioning--privilege-separation)
+  - [2. Hardened LAMP Stack & Database Management](#2-hardened-lamp-stack--database-management)
+  - [3. Apache Virtual Host & Multi-Tenant Path Routing](#3-apache-virtual-host--multi-tenant-path-routing)
+  - [4. Server Performance Monitoring (`htop`)](#4-server-performance-monitoring-htop)
+  - [5. Automated Backup & Antivirus Pipelines](#5-automated-backup--antivirus-pipelines)
+- [Configuration & Automation Scripts](#configuration--automation-scripts)
+- [Quick Deployment Guide](#quick-deployment-guide)
+- [Team & Contributors (REBOOT — Group 6)](#team--contributors-reboot--group-6)
+
+---
+
 ## System Architecture & Specifications
 
 - **Cloud Provider:** Microsoft Azure (Linux VPS)
@@ -12,27 +27,6 @@ A production-style Linux server administration and web hosting infrastructure pr
 - **Backend & Database:** PHP `8.5.4`, MariaDB `11.8.6`, and phpMyAdmin
 - **Remote Access & File Transfer:** OpenSSH Server (Port `22`) and SFTP (CLI `sftp`, WinSCP, FileZilla)
 - **Security & Maintenance:** MariaDB Secure Hardening, ClamAV `1.5.3` Antivirus Engine, and Bash + `crontab` automation
-
----
-
-## Repository Structure
-
-```text
-azure-ubuntu-lamp-virtualhost-deployment/
-├── README.md
-├── configs/
-│   └── reboot.conf                 # Apache Virtual Host & multi-tenant Alias routing
-├── scripts/
-│   ├── backup.sh                   # Automated daily website backup with 7-day retention
-│   └── scan.sh                     # Automated ClamAV signature update & recursive scan
-├── images/
-│   ├── sftp-deployment.png         # WinSCP dual-pane SFTP asset upload proof
-│   ├── virtual-host-demo.png       # Live portfolio served via custom reboot.id domain
-│   ├── htop-monitoring.png         # Real-time CPU, RAM, and load average telemetry
-│   └── clamav-scan-summary.png     # ClamAV malware scan verification output
-└── docs/
-    └── Project_UAS_OS_REBOOT.pdf   # Full technical report & implementation screenshots
-```
 
 ---
 
@@ -87,7 +81,7 @@ azure-ubuntu-lamp-virtualhost-deployment/
 
 ## Configuration & Automation Scripts
 
-### Apache Virtual Host (`configs/reboot.conf`)
+### Apache Virtual Host ([`configs/reboot.conf`](configs/reboot.conf))
 ```apache
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
@@ -112,7 +106,7 @@ azure-ubuntu-lamp-virtualhost-deployment/
 </VirtualHost>
 ```
 
-### Automated Website Backup (`scripts/backup.sh`)
+### Automated Website Backup ([`scripts/backup.sh`](scripts/backup.sh))
 ```bash
 #!/bin/bash
 
@@ -129,7 +123,7 @@ done
 find "$BACKUP_DIR" -name "*.tar.gz" -mtime +7 -delete
 ```
 
-### Automated ClamAV Update & Scan (`scripts/scan.sh`)
+### Automated ClamAV Update & Scan ([`scripts/scan.sh`](scripts/scan.sh))
 ```bash
 #!/bin/bash
 sudo systemctl stop clamav-freshclam
