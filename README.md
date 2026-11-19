@@ -34,16 +34,20 @@ A production-style Linux server administration and web hosting infrastructure pr
   - `http://reboot.id/mahasiswa160425072` $\rightarrow$ `/var/www/160425072`
   - `http://reboot.id/mahasiswa160425084` $\rightarrow$ `/var/www/160425084`
 - Enforced directory ownership (`chown -R [USER]:www-data`) and permissions (`chmod 755`) so each user can independently deploy HTML/CSS and media assets over SFTP.
+![WinSCP dual-pane SFTP window](images/sftp-deployment.png)
+![Live Apache Virtual Host Routing on reboot.id](images/virtual-host-demo.png)
 
 ### 4. Server Performance Monitoring (`htop`)
 - Audited live server metrics under active web serving conditions:
   - **CPU Load:** `0.0%` – `0.7%` across 2 active vCPU cores
   - **Memory Usage:** `458 MB / 7.70 GB` (`~5.8%` utilization)
   - **Process & Load Average:** `46` tasks (`55` user threads, `110` kernel threads) with load averages of `0.24` (1m), `0.14` (5m), and `0.10` (15m)
+ ![Live Server Telemetry via htop](images/htop-monitoring.png)
 
 ### 5. Automated Backup & Antivirus Pipelines
 - **Daily Website Backup with 7-Day Retention (`/var/backups/scripts/backup.sh`):** Automatically compresses every directory in `/var/www/` into dated `.tar.gz` archives and purges backups older than 7 days.
 - **Daily Malware Definition Update & Scan (`/var/scripts/scan.sh`):** Updates ClamAV virus signatures (`3.62M+` signatures) via `freshclam` and recursively scans `/var/*` for infected files.
+![ClamAV Recursive Scan Summary](images/clamav-scan-summary.png)
 
 ---
 
